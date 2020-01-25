@@ -1,5 +1,5 @@
 const express = require("express");
-const restricted = require("../middleware/restricted");
+const restricted = require("../auth/authenticate-middleware");
 const usersModel = require("./users-model");
 
 const router = express.Router();

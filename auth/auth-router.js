@@ -2,8 +2,9 @@ const bcrypt = require("bcryptjs");
 const router = require("express").Router();
 const usersModel = require("../users/users-model");
 const restricted = require("./authenticate-middleware");
+const jokesRouter = require("../jokes/jokes-router");
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const saved = await usersModel.add(req.body);
 
@@ -13,7 +14,7 @@ router.post("/register", (req, res) => {
   }
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await usersModel.findBy({ username }).first();
