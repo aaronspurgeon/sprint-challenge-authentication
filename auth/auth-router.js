@@ -45,4 +45,16 @@ router.get("/protected", restricted(), async (req, res, next) => {
   }
 });
 
+router.get("/logout", restricted(), async (req, res, next) => {
+  req.session.destroy(err => {
+    if (err) {
+      next(err);
+    } else {
+      res.json({
+        message: "You are logged out!"
+      });
+    }
+  });
+});
+
 module.exports = router;
