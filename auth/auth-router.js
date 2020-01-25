@@ -17,9 +17,7 @@ router.post("/login", (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await usersModel.findBy({ username }).first();
-    // since bcrypt hashes generate different results due to the salting,
-    // we rely on the magic internals to compare hashes (rather than doing
-    // it manulally by re-hashing and comparing)
+
     const passwordValid = await bcrypt.compare(password, user.password);
 
     if (user && passwordValid) {
@@ -32,6 +30,16 @@ router.post("/login", (req, res) => {
         message: "Invalid Credentials"
       });
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/protected", restricted(), async (req, res, next) => {
+  try {
+    res.json({
+      message: "You are authorized"
+    });
   } catch (err) {
     next(err);
   }
